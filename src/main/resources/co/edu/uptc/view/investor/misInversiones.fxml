@@ -2,65 +2,84 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToWidth="true" 
-            styleClass="scroll-container" 
-            stylesheets="@../../css/misInversiones.css" 
-            xmlns="http://javafx.com/javafx/26" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="co.edu.uptc.viewcontroller.investor.MisInversionesController">
-    <content>
-        <VBox spacing="20.0" styleClass="root-container">
-            <padding>
-                <Insets bottom="40.0" left="60.0" right="60.0" top="40.0" />
-            </padding>
-
-            <VBox spacing="5.0">
-                <Label styleClass="header-title" text="¡Hola Inversionista!" />
-                <Label styleClass="header-subtitle" text="Bienvenido al Menú Principal. ¿En qué vamos a invertir hoy?" />
-                <VBox.margin>
-                    <Insets bottom="10.0" />
-                </VBox.margin>
-            </VBox>
-
-            <VBox styleClass="card" spacing="5.0">
+<StackPane stylesheets="@../../css/misInversiones.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.investor.MisInversionesController">
+    
+    <ScrollPane fitToWidth="true" styleClass="scroll-container">
+        <content>
+            <VBox spacing="20.0" styleClass="root-container">
                 <padding>
-                    <Insets bottom="25.0" left="30.0" right="30.0" top="25.0" />
+                    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                 </padding>
-                <Label styleClass="card-label-small" text="TU SALDO DISPONIBLE" />
-                <Label styleClass="card-balance" text="\$20,000" />
-            </VBox>
 
-            <VBox alignment="CENTER" styleClass="card" VBox.vgrow="ALWAYS">
-                <padding>
-                    <Insets bottom="50.0" left="30.0" right="30.0" top="50.0" />
-                </padding>
-                
-                <StackPane styleClass="icon-container">
-                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../../images/lupa_icon.png" /> 
-                        </image>
-                    </ImageView>
-                </StackPane>
-                
-                <Label styleClass="empty-state-title" text="Realiza tu primera inversión" />
-                <Label styleClass="empty-state-subtitle" text="No tienes ninguna inversión activa actualmente." />
-            </VBox>
+                <VBox spacing="5.0" minHeight="-Infinity">
+                    <Label styleClass="header-title" text="¡Hola Inversionista!" wrapText="true" />
+                    <Label styleClass="header-subtitle" text="Bienvenido al Menú Principal. ¿En qué vamos a invertir hoy?" wrapText="true" />
+                </VBox>
 
-            <HBox alignment="CENTER">
-                <VBox.margin>
-                    <Insets top="10.0" />
-                </VBox.margin>
-                <Button mnemonicParsing="false" styleClass="btn-primary-dark" text="Nueva Inversión" />
+                <VBox spacing="5.0" styleClass="card-balance-box" minHeight="-Infinity">
+                    <padding>
+                        <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+                    </padding>
+                    <Label styleClass="card-label-small" text="TU SALDO DISPONIBLE" />
+                    <Label fx:id="saldoLabel" styleClass="card-balance" text="\$20,000" />
+                </VBox>
+
+                <VBox fx:id="containerEstadoVacio" alignment="CENTER" styleClass="card-dark" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />
+                    </padding>
+                    <StackPane styleClass="icon-container">
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../images/lupa_icon.png" />
+                        </ImageView>
+                    </StackPane>
+                    <Label styleClass="empty-state-title" text="Realiza tu primera inversión" />
+                    <Label styleClass="empty-state-subtitle" text="No tienes ninguna inversión activa actualmente." />
+                    <Button mnemonicParsing="false" onAction="#abrirModal" styleClass="btn-pill-primary" text="Nueva Inversión">
+                        <VBox.margin><Insets top="20.0" /></VBox.margin>
+                    </Button>
+                </VBox>
+
+                <VBox fx:id="containerListaInversiones" spacing="15.0" visible="false" managed="false" VBox.vgrow="ALWAYS">
+                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#abrirModal" styleClass="btn-dashed-new" text="+ Realizar Nueva Inversión" />
+                    
+                    <VBox fx:id="listaInversionesVBox" spacing="12.0" />
+                </VBox>
+            </VBox>
+        </content>
+    </ScrollPane>
+
+    <StackPane fx:id="modalOverlay" styleClass="modal-overlay" visible="false">
+        <VBox maxHeight="-Infinity" maxWidth="420.0" spacing="20.0" styleClass="modal-card">
+            <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
+            
+            <Label styleClass="modal-title" text="Realizar Nueva Inversión" />
+            
+            <VBox spacing="6.0">
+                <Label styleClass="input-label" text="Seleccionar Activo" />
+                <ComboBox fx:id="comboActivos" maxWidth="Infinity" styleClass="modal-combo" />
+            </VBox>
+            
+            <VBox spacing="6.0">
+                <Label styleClass="input-label" text="Cantidad de activos (Capital Disponible)" />
+                <TextField fx:id="txtMonto" promptText="0.00" styleClass="modal-input" />
+            </VBox>
+            
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                <Button mnemonicParsing="false" onAction="#cerrarModal" styleClass="btn-modal-secondary" text="Cancelar" />
+                <Button mnemonicParsing="false" onAction="#confirmarInversion" styleClass="btn-modal-primary" text="Confirmar Inversión" />
             </HBox>
         </VBox>
-    </content>
-</ScrollPane>
+    </StackPane>
+</StackPane>

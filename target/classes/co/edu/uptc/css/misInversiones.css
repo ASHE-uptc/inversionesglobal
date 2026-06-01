@@ -1,129 +1,175 @@
-/* --- FONDO PRINCIPAL DE LA VISTA (Integrado al modo oscuro) --- */
+/* --- CONFIGURACIÓN GENERAL --- */
 .root-container {
-    -fx-background-color: #0F121D; /* El azul-gris ultra oscuro de fondo */
+    -fx-background-color: #0B0F19; /* Fondo ultra oscuro Cyber-Tech */
 }
 
-/* --- TEXTOS DEL ENCABEZADO --- */
-.header-title {
-    -fx-font-size: 28px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF; /* Blanco brillante e impecable */
-}
-
-.header-subtitle {
-    -fx-font-size: 16px;
-    -fx-text-fill: #94A3B8; /* Gris plateado tecnológico */
-}
-
-/* --- LAS TARJETAS (Clones del Login Box de tu imagen) --- */
-.card {
-    -fx-background-color: #22252D; /* El gris carbón exacto de tus paneles de login */
-    -fx-background-radius: 16px;   /* Bordes redondeados y suaves */
-    -fx-border-color: #2D323F;     /* Borde sutil para dar profundidad en pantallas oscuras */
-    -fx-border-radius: 16px;
-    -fx-border-width: 1px;
-    /* Sombra oscura y profunda para que parezca que flota */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 8);
-}
-
-/* --- TEXTOS DE LA TARJETA DE SALDO --- */
-.card-label-small {
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #94A3B8; /* Gris plata para etiquetas secundarias */
-    -fx-letter-spacing: 1px;
-}
-
-.card-balance {
-    -fx-font-size: 42px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF; /* Saldo en blanco puro destacado */
-}
-
-/* --- ESTILOS DE LA TARJETA VACÍA (Empty State) --- */
-.icon-container {
-    -fx-background-color: #1A1D24; /* Círculo aún más oscuro para que la lupa resalte */
-    -fx-background-radius: 50px;
-    -fx-min-width: 70px;
-    -fx-min-height: 70px;
-    -fx-max-width: 70px;
-    -fx-max-height: 70px;
-}
-
-.empty-state-title {
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF;
-    -fx-padding: 20px 0px 5px 0px;
-}
-
-.empty-state-subtitle {
-    -fx-font-size: 15px;
-    -fx-text-fill: #64748B; /* Gris atenuado para textos informativos */
-}
-
-/* --- BOTÓN NUEVA INVERSIÓN (Clon de "INICIAR SESIÓN") --- */
-.btn-primary-dark {
-    -fx-background-color: transparent; /* Fondo transparente inicial */
-    -fx-text-fill: #FFFFFF;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 25px;       /* Forma de píldora perfecta */
-    -fx-border-radius: 25px;
-    -fx-border-color: #A0AEC0;         /* Contorno gris claro/blanco sutil */
-    -fx-border-width: 1.5px;
-    -fx-padding: 12px 35px;
-    -fx-cursor: hand;
-    -fx-transition: all 0.2s ease-in-out;
-}
-
-/* Efecto Hover del botón */
-.btn-primary-dark:hover {
-    -fx-background-color: #FFFFFF;     /* Se rellena de blanco sólido */
-    -fx-text-fill: #22252D;            /* El texto se vuelve oscuro para hacer contraste */
-    -fx-border-color: #FFFFFF;
-}
-/* --- CONFIGURACIÓN GENERAL DEL SCROLLPANE --- */
 .scroll-container {
     -fx-background-color: transparent;
-    -fx-background: #0F121D; /* Mantiene el fondo oscuro base */
+    -fx-background: #0B0F19;
     -fx-border-color: transparent;
-    -fx-hbar-policy: NEVER;  /* Oculta por completo la barra horizontal redundante */
-    -fx-vbar-policy: AS_NEEDED; /* Solo aparece la vertical si el contenido se desborda */
+    -fx-hbar-policy: NEVER;
+    -fx-vbar-policy: AS_NEEDED;
 }
 
-/* El fondo del área recortada */
-.scroll-container .viewport {
+.scroll-container .viewport { -fx-background-color: transparent; }
+
+/* ScrollBar Customization */
+.scroll-container .scroll-bar:vertical .track { -fx-background-color: #11141D; -fx-background-radius: 10px; }
+.scroll-container .scroll-bar:vertical .thumb { -fx-background-color: #22252D; -fx-background-radius: 10px; }
+.scroll-container .scroll-bar:vertical .thumb:hover { -fx-background-color: #2D323F; }
+.scroll-container .scroll-bar:vertical .increment-button, 
+.scroll-container .scroll-bar:vertical .decrement-button { -fx-background-color: transparent; -fx-padding: 0; }
+.scroll-container .scroll-bar:vertical .increment-arrow, 
+.scroll-container .scroll-bar:vertical .decrement-arrow { -fx-shape: " "; -fx-padding: 0; }
+
+/* --- TEXTOS --- */
+.header-title { -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; }
+.header-subtitle { -fx-font-size: 15px; -fx-text-fill: #94A3B8; }
+
+/* --- CONTENEDORES / TARJETAS --- */
+.card-balance-box {
+    -fx-background-color: #22252D;
+    -fx-background-radius: 16px;
+    -fx-border-color: #2D323F;
+    -fx-border-radius: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 6);
+}
+
+.card-dark {
+    -fx-background-color: #161920;
+    -fx-background-radius: 16px;
+    -fx-border-color: #22252D;
+    -fx-border-radius: 16px;
+}
+
+.card-label-small { -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #94A3B8; -fx-letter-spacing: 0.5px; }
+.card-balance { -fx-font-size: 38px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; }
+
+/* --- CONFIGURACIÓN DE ELEMENTOS DE LA LISTA DE INVERSIONES --- */
+.investment-item-row {
+    -fx-background-color: #22252D;
+    -fx-background-radius: 14px;
+    -fx-border-color: #2D323F;
+    -fx-border-radius: 14px;
+    -fx-cursor: hand;
+}
+
+.investment-item-row:hover {
+    -fx-background-color: #2D323F;
+    -fx-border-color: #4B5563;
+}
+
+.item-title { -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; }
+.item-subtitle { -fx-font-size: 13px; -fx-text-fill: #94A3B8; }
+.item-perf-label { -fx-font-size: 11px; -fx-text-fill: #64748B; }
+.item-perf-value-positive { -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #10B981; } /* Verde Éxito */
+.item-arrow { -fx-font-size: 18px; -fx-text-fill: #4B5563; -fx-font-weight: bold; }
+
+/* --- BOTÓN PRINCIPAL (ESTILO PÍLDORA) --- */
+.btn-pill-primary {
     -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 1.5px;
+    -fx-padding: 10px 30px;
+    -fx-cursor: hand;
+}
+.btn-pill-primary:hover { -fx-background-color: #FFFFFF; -fx-text-fill: #0B0F19; }
+
+/* --- CAPA OVERLAY Y MODAL FLOTANTE --- */
+.modal-overlay {
+    -fx-background-color: rgba(11, 15, 25, 0.85); /* Fondo oscuro translúcido */
 }
 
-/* --- ESTILIZACIÓN DE LA BARRA VERTICAL (Cyber Look) --- */
-/* El carril o fondo gris de la barra */
-.scroll-container .scroll-bar:vertical .track {
-    -fx-background-color: #161922; /* Un tono ligeramente más claro que el fondo */
-    -fx-background-radius: 10px;
+.modal-card {
+    -fx-background-color: #22252D;
+    -fx-background-radius: 20px;
+    -fx-border-color: #333742;
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 25, 0, 0, 10);
 }
 
-/* La barrita/pastilla que arrastras con el mouse */
-.scroll-container .scroll-bar:vertical .thumb {
-    -fx-background-color: #333742; /* El color de tus botones en modo hover */
-    -fx-background-radius: 10px;
+.modal-title { -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; }
+.input-label { -fx-font-size: 13px; -fx-text-fill: #94A3B8; }
+
+.modal-input {
+    -fx-background-color: #11141A;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-border-color: #2D323F;
+    -fx-border-radius: 8px;
+    -fx-padding: 10px;
 }
 
-/* Cuando pasas el mouse por encima de la barra */
-.scroll-container .scroll-bar:vertical .thumb:hover {
-    -fx-background-color: #4B5563; /* Se ilumina sutilmente */
+.modal-combo {
+    -fx-background-color: #11141A;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-border-color: #2D323F;
+    -fx-border-radius: 8px;
+    -fx-padding: 5px;
 }
 
-/* Eliminar los botones con flechas de arriba y abajo para un look más moderno */
-.scroll-container .scroll-bar:vertical .increment-button,
-.scroll-container .scroll-bar:vertical .decrement-button {
+.btn-modal-primary {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #22252D;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 25px;
+    -fx-cursor: hand;
+}
+
+.btn-modal-secondary {
     -fx-background-color: transparent;
-    -fx-padding: 0px;
+    -fx-text-fill: #94A3B8;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: #2D323F;
+    -fx-padding: 10px 25px;
+    -fx-cursor: hand;
+}
+.btn-modal-secondary:hover { -fx-text-fill: #FFFFFF; -fx-border-color: #4B5563; }
+
+/* --- PANTALLA DETALLES Y GRÁFICO LINEAL --- */
+.btn-back {
+    -fx-background-color: transparent;
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+.btn-back:hover { -fx-text-fill: #FFFFFF; }
+
+.badge-status-active {
+    -fx-background-color: rgba(16, 185, 129, 0.15);
+    -fx-text-fill: #10B981;
+    -fx-padding: 5px 15px;
+    -fx-background-radius: 12px;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
 }
 
-.scroll-container .scroll-bar:vertical .increment-arrow,
-.scroll-container .scroll-bar:vertical .decrement-arrow {
-    -fx-shape: " "; /* Remueve la geometría de la flecha */
-    -fx-padding: 0px;
+/* Remoción de grillas por defecto en JavaFX Chart */
+.chart-plot-background { -fx-background-color: transparent; }
+.chart-series-line { -fx-stroke: #FFFFFF; -fx-stroke-width: 2.5px; } /* Línea blanca limpia */
+
+/* Estilos de Filas de Atributos */
+.attributes-table-container {
+    -fx-background-color: #22252D;
+    -fx-background-radius: 14px;
+    -fx-border-color: #2D323F;
+    -fx-border-radius: 14px;
 }
+.attr-row { -fx-border-color: transparent transparent #161920 transparent; -fx-border-width: 1px; }
+.attr-name { -fx-text-fill: #94A3B8; -fx-font-size: 15px; }
+.attr-value { -fx-text-fill: #FFFFFF; -fx-font-size: 15px; -fx-font-weight: bold; }
+.attr-value-highlight { -fx-text-fill: #10B981; -fx-font-size: 16px; -fx-font-weight: bold; }
+
+/* Lupa Icon Styles */
+.icon-container { -fx-background-color: #1A1D24; -fx-background-radius: 50px; -fx-min-width: 70px; -fx-min-height: 70px; }
+.empty-state-title { -fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-padding: 20px 0 5px 0; }
+.empty-state-subtitle { -fx-font-size: 14px; -fx-text-fill: #64748B; }

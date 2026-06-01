@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -28,7 +29,9 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
-    // Inyectamos el contenedor principal
+    // Guarda la instancia activa del Dashboard para acceso global
+    private static DashboardController instanciaGlobal;
+
     @FXML
     private VBox warningBox;
     @FXML
@@ -37,6 +40,8 @@ public class DashboardController implements Initializable {
     private Button btnCerrarSesion;
     @FXML
     private BorderPane mainBorderPane;
+    @FXML
+    private StackPane contentArea; // Vinculado al contenedor dinámico central derecho
 
     @FXML
     private void mostrarMisInversiones() {
@@ -52,39 +57,51 @@ public class DashboardController implements Initializable {
     private void mostrarActivos() {
         cambiarCentro("/co/edu/uptc/view/investor/activosView.fxml");
     }
+
+    /**
+     * MÉTODOS ESTÁTICOS DE NAVEGACIÓN GLOBAL
+     * Permiten cambiar el contenido de la derecha de forma segura desde subcontroladores
+     */
+    public static DashboardController getInstancia() {
+        return instanciaGlobal;
+    }
+
+    public void setVistaCentral(Node nodoVista) {
+        if (contentArea != null) {
+            contentArea.getChildren().setAll(nodoVista);
+        } else {
+            // Respaldo por si el nodo contentArea fue sobrescrito
+            mainBorderPane.setCenter(nodoVista);
+        }
+    }
+
     @FXML
     public void handleCerrarSesion(ActionEvent event) {
-        // 1. Crear la alerta de confirmación
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle("Cerrar Sesión");
         alerta.setHeaderText("¿Estás seguro de que deseas salir?");
         alerta.setContentText("Cualquier cambio no guardado en la sesión actual podría perderse.");
 
-        // Personalizar los botones en español
         ButtonType botonSi = new ButtonType("Sí, salir");
         ButtonType botonNo = new ButtonType("Cancelar");
         alerta.getButtonTypes().setAll(botonSi, botonNo);
 
-        // 2. Mostrar la alerta en pantalla y esperar la respuesta del usuario
         Optional<ButtonType> resultado = alerta.showAndWait();
 
-        // 3. Si el usuario hace clic en "Sí, salir", procedemos con el cierre
         if (resultado.isPresent() && resultado.get() == botonSi) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/auth/login.fxml"));
                 Parent loginRoot = loader.load();
 
-                // Obtener la ventana actual y guardar su estado
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 boolean estabaMaximizada = stage.isMaximized();
 
                 Scene loginScene = new Scene(loginRoot);
                 stage.setScene(loginScene);
 
-                // 4. Restauramos el tamaño (CON LA CORRECCIÓN APLICADA)
                 if (estabaMaximizada) {
-                    stage.setMaximized(false); // 1. Apagamos un instante
-                    stage.setMaximized(true);  // 2. Encendemos para forzar pantalla completa
+                    stage.setMaximized(false);
+                    stage.setMaximized(true);
                 } else {
                     stage.centerOnScreen();
                 }
@@ -96,36 +113,28 @@ public class DashboardController implements Initializable {
         } 
     }
 
-    /**
-     * Método genérico encargado de limpiar el centro del BorderPane
-     * y cargar el nuevo FXML de forma limpia.
-     */
     private void cambiarCentro(String rutaFxml) {
         try {
-            // 1. Cargamos el archivo FXML secundario
             FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
             Parent nuevaVista = loader.load();
             
-            // 2. Reemplazamos el nodo central del BorderPane con la nueva vista
-            mainBorderPane.setCenter(nuevaVista);
+            // OPTIMIZACIÓN: Inyectamos la vista DENTRO del contentArea en vez de reemplazar el centro completo
+            setVistaCentral(nuevaVista);
             
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error al cargar la sub-vista: " + rutaFxml);
         }
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // 1. Agregar los identificadores de los idiomas
+        // Inicializamos la referencia estática
+        instanciaGlobal = this;
+
         idiomaComboBox.getItems().addAll("es", "en");
-
-        // 2. Definir cómo se verán los elementos en la lista desplegable
         idiomaComboBox.setCellFactory(param -> createCustomCell());
-
-        // 3. Definir cómo se verá el elemento SELECCIONADO en el botón principal
         idiomaComboBox.setButtonCell(createCustomCell());
-
-        // Seleccionar el primero por defecto
         idiomaComboBox.getSelectionModel().selectFirst();
 
         if (warningBox != null) {
@@ -134,8 +143,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // Método auxiliar que construye la fila con Imagen + Texto Código + Texto
-    // Idioma
     private ListCell<String> createCustomCell() {
         return new ListCell<String>() {
             @Override
@@ -157,7 +164,6 @@ public class DashboardController implements Initializable {
                     Label lblName = new Label(item.equals("es") ? "Español" : "English");
                     lblName.setStyle("-fx-text-fill: white; -fx-font-size: 20px;");
 
-                    // Ajustamos las rutas exactamente a tu paquete personalizado
                     String imagePath = item.equals("es") ? "/co/edu/uptc/images/colflag.png"
                             : "/co/edu/uptc/images/usaflag.jpg";
 
@@ -167,7 +173,6 @@ public class DashboardController implements Initializable {
                             flagView.setImage(new Image(stream));
                             container.getChildren().addAll(flagView, lblName);
                         } else {
-                            System.out.println("⚠️ No se encontró la imagen en: " + imagePath);
                             container.getChildren().add(lblName);
                         }
                     } catch (Exception e) {
