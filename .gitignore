@@ -1,0 +1,15 @@
+# Ignorar carpetas de compilación de Maven y Java
+target/
+*.class
+
+# Ignorar archivos de configuración de editores/IDEs
+.idea/
+.settings/
+.classpath
+.project
+*.iml
+*.nbattrs
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
