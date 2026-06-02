@@ -38,12 +38,16 @@ public class DashboardController implements Initializable {
     // Guarda la instancia activa del Dashboard para acceso global
     private static DashboardController instanciaGlobal;
     private String rutaVistaActual;
+    
+    // NUEVO: Guardamos el inversionista actual para poder traducir su perfil de riesgo dinámicamente
+    private Investor inversionistaActual; 
 
     @FXML private VBox warningBox;
     @FXML private ComboBox<String> idiomaComboBox;
     @FXML private Button btnCerrarSesion;
     @FXML private BorderPane mainBorderPane;
     @FXML private StackPane contentArea;
+    @FXML private ResourceBundle resources;
 
     // --- Componentes del Perfil de Inversionista ---
     @FXML private Label nombreLabel;
@@ -51,7 +55,7 @@ public class DashboardController implements Initializable {
     @FXML private Label rolLabel;
     @FXML private ImageView avatarImageView;
 
-    // --- Botones del Menú Lateral (Añadidos por Carlomagno) ---
+    // --- Botones del Menú Lateral ---
     @FXML private Button btnMisInversiones;
     @FXML private Button btnReportes;
     @FXML private Button btnActivos;
@@ -103,13 +107,9 @@ public class DashboardController implements Initializable {
 
         if (resultado.isPresent() && resultado.get() == botonSi) {
             try {
-                // 🎯 Solución al congelamiento: Limpiamos la sesión y la instancia estática
                 App.setUsuarioLogueado(null);
                 instanciaGlobal = null;
-
-                // Redireccionar al Login de forma limpia mediante App.setRoot
                 App.setRoot("auth/login");
-
             } catch (IOException e) {
                 System.err.println("❌ Error al redireccionar al login tras cerrar sesión:");
                 e.printStackTrace();
@@ -119,17 +119,12 @@ public class DashboardController implements Initializable {
 
     private void cambiarCentro(String rutaFxml) {
         try {
-            // Guardamos la ruta para recordar qué pantalla está abierta y poder refrescarla al cambiar idioma
             this.rutaVistaActual = rutaFxml;
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
-            
-            // Inyectamos dinámicamente el ResourceBundle del idioma activo antes de cargar
             loader.setResources(I18nManager.getInstance().getBundle());
             
             Parent nuevaVista = loader.load();
-            
-            // Renderizado óptimo en la sección del ContentArea (Derecha)
             setVistaCentral(nuevaVista);
             
         } catch (IOException e) {
@@ -142,18 +137,15 @@ public class DashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         instanciaGlobal = this;
 
-        // 1. Configurar ComboBox de idiomas
         if (idiomaComboBox.getItems().isEmpty()) {
             idiomaComboBox.getItems().addAll("es", "en");
         }
         idiomaComboBox.setCellFactory(param -> createCustomCell());
         idiomaComboBox.setButtonCell(createCustomCell());
         
-        // Seleccionamos el idioma inicial desde tu I18nManager
         String idiomaActual = I18nManager.getInstance().getCurrentLocale().getLanguage();
         idiomaComboBox.getSelectionModel().select(idiomaActual);
 
-        // Escuchar el cambio de idioma dinámicamente
         idiomaComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.equals(oldValue)) {
                 aplicarCambioIdioma(newValue);
@@ -165,10 +157,9 @@ public class DashboardController implements Initializable {
             warningBox.setManaged(false);
         }
 
-        // 2. CARGA DE DATOS DE PERSISTENCIA (Tu lógica corregida a prueba de fallos)
         cargarDatosInversionista();
         
-        // Traducir menús fijos
+        // Al final llamamos a recargarTextosGlobales para aplicar traducciones por primera vez
         recargarTextosGlobales();
     }
 
@@ -176,15 +167,10 @@ public class DashboardController implements Initializable {
         User usuarioLogueado = App.getUsuarioLogueado();
 
         if (usuarioLogueado != null) {
-            if (rolLabel != null) {
-                rolLabel.setText("Inversionista");
-            }
-
             String emailLimpio = usuarioLogueado.getEmail().trim().toLowerCase();
             InvestorService investorService = new InvestorService();
             Investor inversionista = investorService.findByEmail(emailLimpio);
 
-            // Creación controlada para evitar colapsos por duplicidad
             if (inversionista == null) {
                 System.out.println("⚠️ El inversionista no existía en el JSON financiero. Registrando...");
                 try {
@@ -201,7 +187,9 @@ public class DashboardController implements Initializable {
                 }
             }
 
-            // Asignar el nombre real de forma dinámica
+            // Guardamos el inversionista actual en la variable de clase
+            this.inversionistaActual = inversionista;
+
             if (inversionista != null && nombreLabel != null && inversionista.getName() != null) {
                 String nombreReal = inversionista.getName();
                 nombreLabel.setText(nombreReal);
@@ -215,16 +203,8 @@ public class DashboardController implements Initializable {
                 }
             }
 
-            // Asignar perfil de riesgo de forma segura
-            if (inversionista != null && perfilRiesgoLabel != null) {
-                if (inversionista.getRiskProfile() != null) {
-                    perfilRiesgoLabel.setText(inversionista.getRiskProfile().name());
-                } else {
-                    perfilRiesgoLabel.setText("Sin asignar");
-                }
-            }
+            // (La asignación del rolLabel y perfilRiesgoLabel se movió a recargarTextosGlobales())
 
-            // Renderizado seguro del Avatar Circular (Soporta absolute paths y file:/ URIs)
             if (usuarioLogueado.getProfileImagePath() != null && avatarImageView != null) {
                 try {
                     String rutaImagen = usuarioLogueado.getProfileImagePath();
@@ -268,13 +248,9 @@ public class DashboardController implements Initializable {
     }
 
     private void aplicarCambioIdioma(String codigoIdioma) {
-        // 1. Cambiar el Locale global
         I18nManager.getInstance().setLocale(Locale.of(codigoIdioma));
-
-        // 2. Traducir elementos estáticos del panel lateral
         recargarTextosGlobales();
 
-        // 3. Refrescar la sub-pantalla del centro cargándole de nuevo su FXML con el nuevo bundle
         if (rutaVistaActual != null) {
             cambiarCentro(rutaVistaActual);
         }
@@ -283,10 +259,29 @@ public class DashboardController implements Initializable {
     private void recargarTextosGlobales() {
         ResourceBundle bundle = I18nManager.getInstance().getBundle();
         
+        // 1. Traducción de botones
         if (btnMisInversiones != null) btnMisInversiones.setText(bundle.getString("global.menu.investments"));
         if (btnReportes != null) btnReportes.setText(bundle.getString("global.menu.reports"));
         if (btnActivos != null) btnActivos.setText(bundle.getString("global.menu.assets"));
         if (btnCerrarSesion != null) btnCerrarSesion.setText(bundle.getString("global.btn.logout"));
+
+        // 2. Traducción del Rol ("Inversionista" -> "Investor")
+        if (rolLabel != null && bundle.containsKey("role.investor")) {
+            rolLabel.setText(bundle.getString("role.investor"));
+        }
+
+        // 3. Traducción dinámica del perfil de riesgo ("AGGRESSIVE" -> "Agresivo")
+        if (inversionistaActual != null && perfilRiesgoLabel != null && inversionistaActual.getRiskProfile() != null) {
+            // Convierte el Enum (ej: "CONSERVATIVE") en la llave del properties (ej: "risk.conservative")
+            String riskKey = "risk." + inversionistaActual.getRiskProfile().name().toLowerCase();
+            
+            if (bundle.containsKey(riskKey)) {
+                perfilRiesgoLabel.setText(bundle.getString(riskKey));
+            } else {
+                // Fallback de seguridad: si se te olvida poner la llave en el properties, muestra el Enum original
+                perfilRiesgoLabel.setText(inversionistaActual.getRiskProfile().name());
+            }
+        }
     }
 
     private ListCell<String> createCustomCell() {

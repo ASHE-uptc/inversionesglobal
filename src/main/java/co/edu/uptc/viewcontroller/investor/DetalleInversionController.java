@@ -3,101 +3,113 @@ package co.edu.uptc.viewcontroller.investor;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
-
-
-import java.io.IOException;
+import java.util.ResourceBundle;
+import co.edu.uptc.model.Investment;
+import co.edu.uptc.model.Asset;
+import co.edu.uptc.service.AssetService;
+import co.edu.uptc.util.I18nManager;
 
 public class DetalleInversionController {
 
-    // --- COMPONENTES INYECTADOS DESDE FXML ---
-    @FXML
-    private Label lblNombreActivo;
-    @FXML
-    private Label lblUnidades;
-    @FXML
-    private Label lblMontoInicial;
-    @FXML
-    private Label lblValorActual;
-    @FXML
-    private LineChart<String, Number> chartRendimiento;
+    // --- COMPONENTES ASIGNADOS EXPRESAMENTE EN TU FXML ---
+    @FXML private Label lblNombreActivo;    
+    @FXML private Label lblMontoInicial;    
+    @FXML private Label lblValorActual;     
+    @FXML private Label lblPorcentajeRendimiento; 
+    @FXML private Label lblUnidades;        
+
+    // --- SERVICIOS Y CONTROL DE DATOS ---
+    private Investment inversionSeleccionada;
+    private ResourceBundle bundle;
+    private final AssetService assetService = new AssetService();
 
     @FXML
     public void initialize() {
-        // Aquí puedes realizar ajustes de inicio si lo requieres.
-        // Nota: El truco de quitar los círculos de los puntos de la gráfica se maneja
-        // desde el CSS.
+        // 1. Cargar el diccionario de idiomas configurado globalmente
+        try {
+            bundle = I18nManager.getInstance().getBundle();
+        } catch (Exception e) {
+            System.err.println("Error al cargar ResourceBundle en DetalleInversionController: " + e.getMessage());
+        }
+
+        // 2. Control de renderizado seguro por si el objeto se inyectó antes del load()
+        if (inversionSeleccionada != null) {
+            inyectarDatosReales();
+        }
     }
 
     /**
-     * Este método es invocado por el controlador anterior pasando los datos de la
-     * inversión
+     * Recibe la inversión de la pantalla anterior. Si los componentes gráficos 
+     * ya fueron inicializados por JavaFX, inyecta los datos de inmediato.
      */
-    public void setDatosInversion(String nombre, String unidades, double montoInicial) {
-        // 1. Asignar los textos a las etiquetas correspondientes
-        if (lblNombreActivo != null)
-            lblNombreActivo.setText(nombre);
-        if (lblUnidades != null)
-            lblUnidades.setText(unidades);
-        if (lblMontoInicial != null)
-            lblMontoInicial.setText(String.format("$%,.2f", montoInicial));
-
-        // 2. Calcular el valor actual simulando el +17% de rendimiento de tu captura
-        double rendimientoFactor = 1.17;
-        double valorActual = montoInicial * rendimientoFactor;
-        if (lblValorActual != null)
-            lblValorActual.setText(String.format("$%,.2f", valorActual));
-
-        // 3. Dibujar la línea de tiempo en el LineChart basados en el monto inicial y
-        // final
-        generarDatosGrafico(montoInicial, valorActual);
+    public void setInversion(Investment investment) {
+        this.inversionSeleccionada = investment;
+        if (lblNombreActivo != null && investment != null) {
+            inyectarDatosReales();
+        }
     }
 
     /**
-     * Genera una curva de comportamiento financiero realista (subidas y bajadas)
-     * que termina exactamente en el valor actual de la inversión.
+     * Mapea y procesa los atributos del JSON hacia la interfaz gráfica de usuario
      */
-    private void generarDatosGrafico(double base, double actual) {
-        if (chartRendimiento == null)
-            return;
+    private void inyectarDatosReales() {
+        // 1. Buscar el activo en asset.json para descifrar su precio de mercado actual y nombre
+        Asset activoAsociado = assetService.findById(inversionSeleccionada.getAssetId());
+        String nombreAMostrar = (activoAsociado != null) ? activoAsociado.getName() : inversionSeleccionada.getAssetId();
+        lblNombreActivo.setText(nombreAMostrar);
 
-        chartRendimiento.getData().clear(); // Limpiar comportamientos de gráficos anteriores
+        // 2. Variables matemáticas y de negocio basadas en tus modelos exactos
+        double capitalInvertido = inversionSeleccionada.getPurchasePrice();
+        double cantidadUnidades = inversionSeleccionada.getAmount();
+        
+        double precioActualActivo = (activoAsociado != null) ? activoAsociado.getActualPrice() : 0.0;
+        double valorActualMercado = cantidadUnidades * precioActualActivo;
 
-        XYChart.Series<String, Number> serieFinanciera = new XYChart.Series<>();
+        // 3. Modificar textos de métricas de capitales formateados a 2 decimales
+        lblMontoInicial.setText(String.format("$%,.2f USD", capitalInvertido));
+        lblValorActual.setText(String.format("$%,.2f USD", valorActualMercado));
 
-        // Puntos de la curva simulando comportamiento del mercado (Semana a Semana)
-        serieFinanciera.getData().add(new XYChart.Data<>("Sem 1", base));
-        serieFinanciera.getData().add(new XYChart.Data<>("Sem 2", base * 0.94)); // Caída de mercado
-        serieFinanciera.getData().add(new XYChart.Data<>("Sem 3", base * 1.08)); // Recuperación
-        serieFinanciera.getData().add(new XYChart.Data<>("Sem 4", base * 1.03)); // Corrección lateral
-        serieFinanciera.getData().add(new XYChart.Data<>("Sem 5", actual)); // Cierre en profit (+17%)
+        // 4. Calcular el rendimiento porcentual real dinámicamente
+        double rendimientoPorcentaje = 0.0;
+        if (capitalInvertido > 0) {
+            rendimientoPorcentaje = ((valorActualMercado - capitalInvertido) / capitalInvertido) * 100;
+        }
 
-        // Inyectar la serie de datos al componente gráfico
-        chartRendimiento.getData().add(serieFinanciera);
+        // Estilizar la métrica de rendimiento según el resultado financiero
+        if (rendimientoPorcentaje >= 0) {
+            lblPorcentajeRendimiento.setText(String.format("+ %,.2f%% ▲", rendimientoPorcentaje));
+            lblPorcentajeRendimiento.setStyle("-fx-text-fill: #2ecc71; -fx-font-weight: bold; -fx-font-size: 16px;");
+        } else {
+            lblPorcentajeRendimiento.setText(String.format("%,.2f%% ▼", rendimientoPorcentaje));
+            lblPorcentajeRendimiento.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold; -fx-font-size: 16px;");
+        }
+
+        // 5. Adaptar el texto de las unidades aplicando la internacionalización (i18n)
+        String palabraUnidades = (bundle != null && bundle.containsKey("investments.units")) 
+                ? bundle.getString("investments.units") 
+                : "unidades";
+        lblUnidades.setText(String.format("%.4f %s", cantidadUnidades, palabraUnidades));
     }
 
     /**
-     * Acción vinculada al botón "← Volver". Reempuja la vista de Mis Inversiones al
-     * contentArea.
+     * Maneja el regreso a la lista principal reutilizando el setVistaCentral de tu Dashboard
      */
     @FXML
     private void volverAInversiones() {
         try {
-            System.out.println("Regresando a Mis Inversiones...");
-
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/co/edu/uptc/view/investor/misInversiones.fxml"));
-            loader.setResources(co.edu.uptc.util.I18nManager.getInstance().getBundle());
-            Parent inversionesView = loader.load();
-
-            if (DashboardController.getInstancia() != null) {
-                DashboardController.getInstancia().setVistaCentral(inversionesView);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uptc/view/investor/misInversiones.fxml"));
+            if (bundle != null) {
+                loader.setResources(bundle);
             }
-
-        } catch (IOException e) {
-            System.err.println("Error al regresar a la lista de inversiones: " + e.getMessage());
+            
+            Parent listaView = loader.load();
+            
+            if (DashboardController.getInstancia() != null) {
+                DashboardController.getInstancia().setVistaCentral(listaView);
+            }
+        } catch (Exception e) {
+            System.err.println("Error crítico al intentar volver al panel de Mis Inversiones: " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -32,7 +32,7 @@
                         <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
                     </padding>
                     <Label styleClass="card-label-small" text="%misinversiones.balance.label" />
-                    <Label fx:id="saldoLabel" styleClass="card-balance" text="\$20,000" />
+                    <Label fx:id="saldoLabel" styleClass="card-balance" text="0.00" />
                 </VBox>
 
                 <VBox fx:id="containerEstadoVacio" alignment="CENTER" styleClass="card-dark" VBox.vgrow="ALWAYS">
@@ -52,10 +52,16 @@
                 </VBox>
 
                 <VBox fx:id="containerListaInversiones" spacing="15.0" visible="false" managed="false" VBox.vgrow="ALWAYS">
-                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#abrirModal" styleClass="btn-dashed-new" text="%misinversiones.list.newbtn" />
+                    
+                    <HBox alignment="CENTER_LEFT">
+                        <Label styleClass="header-subtitle" text="%misinversiones.list.title" style="-fx-font-weight: bold; -fx-text-fill: white;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#abrirModal" styleClass="btn-pill-primary" text="%misinversiones.list.newbtn" />
+                    </HBox>
                     
                     <VBox fx:id="listaInversionesVBox" spacing="12.0" />
                 </VBox>
+
             </VBox>
         </content>
     </ScrollPane>

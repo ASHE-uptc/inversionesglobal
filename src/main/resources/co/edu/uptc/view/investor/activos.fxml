@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.FlowPane?>
 
 <ScrollPane fitToWidth="true" styleClass="main-bg" stylesheets="@../../css/activos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uptc.viewcontroller.investor.ActivosController">
     <content>
@@ -25,12 +26,16 @@
                 </padding>
             </TextField>
 
-            <HBox spacing="10.0">
+            <FlowPane hgap="10.0" vgap="10.0">
                 <Button onAction="#filtrarTodos" styleClass="btn-filter-active" text="%activos.filter.all" />
+                <Button onAction="#filtrarBond" styleClass="btn-filter" text="%activos.filter.bond" />
+                <Button onAction="#filtrarBadge" styleClass="btn-filter" text="%activos.filter.badge" />
+                <Button onAction="#filtrarEtf" styleClass="btn-filter" text="%activos.filter.etf" />
+                <Button onAction="#filtrarProperty" styleClass="btn-filter" text="%activos.filter.property" />
+                <Button onAction="#filtrarStock" styleClass="btn-filter" text="%activos.filter.stock" />
                 <Button onAction="#filtrarCrypto" styleClass="btn-filter" text="%activos.filter.crypto" />
-                <Button onAction="#filtrarAcciones" styleClass="btn-filter" text="%activos.filter.stocks" />
-                <Button onAction="#filtrarForex" styleClass="btn-filter" text="%activos.filter.forex" />
-            </HBox>
+                <Button onAction="#filtrarNft" styleClass="btn-filter" text="%activos.filter.nft" />
+            </FlowPane>
 
             <VBox spacing="10.0">
                 <padding>

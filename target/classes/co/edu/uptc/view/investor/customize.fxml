@@ -23,8 +23,8 @@
             </padding>
 
             <VBox spacing="5.0">
-                <Label styleClass="header-title" text="Personaliza tu cuenta" />
-                <Label styleClass="header-subtitle" text="Ponte una bonita foto de perfil, cambia tu nombre de usuario o tu perfil de riesgo!" />
+                <Label styleClass="header-title" text="%customize.title" />
+                <Label styleClass="header-subtitle" text="%customize.subtitle" />
                 <VBox.margin>
                     <Insets bottom="10.0" />
                 </VBox.margin>
@@ -34,14 +34,14 @@
                 <padding>
                     <Insets bottom="50.0" left="30.0" right="30.0" top="50.0" />
                 </padding>
-                <Label styleClass="empty-state-title" text="MI FOTO DE PERFIL" />
+                <Label styleClass="empty-state-title" text="%customize.section.avatar" />
                 <ImageView fx:id="imgPerfilPersonalizacion" fitHeight="140.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                <Button fx:id="btnCargarFoto" mnemonicParsing="false" onAction="#handleCargarFoto" styleClass="btn-primary-dark" text="Cargar foto de perfil">
+                <Button fx:id="btnCargarFoto" mnemonicParsing="false" onAction="#handleCargarFoto" styleClass="btn-primary-dark" text="%customize.btn.loadavatar">
                     <VBox.margin>
                         <Insets top="10.0" />
                     </VBox.margin>
                 </Button>
-                <Button fx:id="btnGuardarFoto" mnemonicParsing="false" onAction="#handleGuardarFoto" styleClass="btn-primary-dark" text="Guardar Foto">
+                <Button fx:id="btnGuardarFoto" mnemonicParsing="false" onAction="#handleGuardarFoto" styleClass="btn-primary-dark" text="%customize.btn.saveavatar">
                     <VBox.margin>
                         <Insets top="20.0" />
                     </VBox.margin>
@@ -53,14 +53,14 @@
                     <Insets bottom="50.0" left="30.0" right="30.0" top="50.0" />
                 </padding>
                 <children>
-                    <Label prefHeight="67.0" prefWidth="249.0" styleClass="empty-state-title" text="MI NOMBRE DE USUARIO ES:" />
+                    <Label prefHeight="67.0" prefWidth="249.0" styleClass="empty-state-title" text="%customize.section.username" />
                     <HBox alignment="CENTER" prefHeight="4.0" prefWidth="436.0" spacing="10.0">
                         <children>
                             <TextField fx:id="txtUsername" editable="false" prefHeight="71.0" prefWidth="398.0" styleClass="card-label-editable" text="Investor123" />
-                            <Button fx:id="btnEditarUsername" mnemonicParsing="false" onAction="#handleEditarUsername" styleClass="btn-primary-dark" text="Editar" />
+                            <Button fx:id="btnEditarUsername" mnemonicParsing="false" onAction="#handleEditarUsername" styleClass="btn-primary-dark" text="%customize.btn.edit" />
                         </children>
                     </HBox>
-                    <Button fx:id="btnGuardarUsername" mnemonicParsing="false" onAction="#handleGuardarUsername" styleClass="btn-primary-dark" text="Guardar Nombre">
+                    <Button fx:id="btnGuardarUsername" mnemonicParsing="false" onAction="#handleGuardarUsername" styleClass="btn-primary-dark" text="%customize.btn.saveusername">
                         <VBox.margin>
                             <Insets top="20.0" />
                         </VBox.margin>
@@ -73,22 +73,22 @@
                     <Insets bottom="50.0" left="30.0" right="30.0" top="50.0" />
                 </padding>
                 <children>
-                    <Label prefHeight="67.0" prefWidth="218.0" styleClass="empty-state-title" text="MI PERFIL DE RIESGO ES:" />
+                    <Label prefHeight="67.0" prefWidth="218.0" styleClass="empty-state-title" text="%customize.section.risk" />
                     <VBox spacing="10.0">
                         <children>
                             <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" styleClass="fila-riesgo">
                                 <children>
-                                    <RadioButton fx:id="radioConservador" mnemonicParsing="false" prefHeight="75.0" prefWidth="175.0" text="CONSERVADOR" toggleGroup="$grupoPerfilRiesgo" />
+                                    <RadioButton fx:id="radioConservador" mnemonicParsing="false" prefHeight="75.0" prefWidth="175.0" text="%customize.risk.conservative" toggleGroup="$grupoPerfilRiesgo" />
                                 </children>
                             </HBox>
                             <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" styleClass="fila-riesgo">
                                 <children>
-                                    <RadioButton fx:id="radioModerado" mnemonicParsing="false" prefHeight="75.0" prefWidth="178.0" text="MODERADO" toggleGroup="$grupoPerfilRiesgo" />
+                                    <RadioButton fx:id="radioModerado" mnemonicParsing="false" prefHeight="75.0" prefWidth="178.0" text="%customize.risk.moderate" toggleGroup="$grupoPerfilRiesgo" />
                                 </children>
                             </HBox>
                             <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" styleClass="fila-riesgo">
                                 <children>
-                                    <RadioButton fx:id="radioAgresivo" mnemonicParsing="false" prefHeight="70.0" prefWidth="212.0" text="AGRESIVO" toggleGroup="$grupoPerfilRiesgo" />
+                                    <RadioButton fx:id="radioAgresivo" mnemonicParsing="false" prefHeight="70.0" prefWidth="212.0" text="%customize.risk.aggressive" toggleGroup="$grupoPerfilRiesgo" />
                                 </children>
                             </HBox>
                         </children>
@@ -97,13 +97,33 @@
                         </VBox.margin>
                     </VBox>
                     
-                    <Button fx:id="btnGuardarRiesgo" mnemonicParsing="false" onAction="#handleGuardarRiesgo" styleClass="btn-primary-dark" text="Guardar Perfil de Riesgo">
+                    <Button fx:id="btnGuardarRiesgo" mnemonicParsing="false" onAction="#handleGuardarRiesgo" styleClass="btn-primary-dark" text="%customize.btn.saverisk">
                         <VBox.margin>
                             <Insets top="25.0" />
                         </VBox.margin>
                     </Button>
                 </children>
             </VBox>
+
+            <VBox alignment="CENTER" styleClass="card">
+                <padding>
+                    <Insets bottom="50.0" left="30.0" right="30.0" top="50.0" />
+                </padding>
+                <children>
+                    <Label prefHeight="67.0" prefWidth="250.0" alignment="CENTER" styleClass="empty-state-title" text="%customize.section.deposit" />
+                    <HBox alignment="CENTER" spacing="10.0">
+                        <children>
+                            <TextField fx:id="txtMontoDeposito" prefHeight="50.0" prefWidth="350.0" promptText="%customize.prompt.deposit" styleClass="card-label-editable" />
+                        </children>
+                    </HBox>
+                    <Button fx:id="btnDepositar" mnemonicParsing="false" onAction="#handleDepositarSaldo" styleClass="btn-primary-dark" text="%customize.btn.deposit">
+                        <VBox.margin>
+                            <Insets top="25.0" />
+                        </VBox.margin>
+                    </Button>
+                </children>
+            </VBox>
+
         </VBox>
     </content>
 </ScrollPane>

@@ -14,61 +14,59 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ResourceBundle;
 import co.edu.uptc.app.App;
 import co.edu.uptc.model.User;
 import co.edu.uptc.model.Investor;
 import co.edu.uptc.model.enums.RiskProfile;
 import co.edu.uptc.service.InvestorService;
 import co.edu.uptc.service.UserService;
+import co.edu.uptc.util.I18nManager;
 
 public class CustomizeController {
 
-    UserService userService=new UserService();
-    @FXML
-    private Button btnGuardarUsername;
-    @FXML
-    private Button btnGuardarRiesgo;
-    @FXML
-    private ImageView imgPerfilPersonalizacion;
-    @FXML
-    private TextField txtUsername;
-    @FXML
-    private Button btnEditarUsername;
-    @FXML
-    private Button btnGuardarFoto;
-    @FXML
-    private Button btnCargarFoto;
-    @FXML
-    private ToggleGroup grupoPerfilRiesgo;
-    @FXML
-    private RadioButton radioConservador;
-    @FXML
-    private RadioButton radioModerado;
-    @FXML
-    private RadioButton radioAgresivo;
+    UserService userService = new UserService();
+    
+    @FXML private Button btnGuardarUsername;
+    @FXML private Button btnGuardarRiesgo;
+    @FXML private ImageView imgPerfilPersonalizacion;
+    @FXML private TextField txtUsername;
+    @FXML private Button btnEditarUsername;
+    @FXML private Button btnGuardarFoto;
+    @FXML private Button btnCargarFoto;
+    @FXML private ToggleGroup grupoPerfilRiesgo;
+    @FXML private RadioButton radioConservador;
+    @FXML private RadioButton radioModerado;
+    @FXML private RadioButton radioAgresivo;
+    @FXML private TextField txtMontoDeposito;
+    @FXML private Button btnDepositar;
 
     private boolean editandoUsername = false;
     private String rutaImagenTemporal = null;
+    private ResourceBundle bundle;
 
     @FXML
     public void initialize() {
+        // Inicializar el bundle de idioma global
+        try {
+            bundle = I18nManager.getInstance().getBundle();
+        } catch (Exception e) {
+            System.err.println("No se pudo cargar el I18nManager, usando bundle por defecto.");
+        }
+
         User usuarioLogueado = App.getUsuarioLogueado();
         if (usuarioLogueado != null) {
-
-            // 1. CARGAR NOMBRE REAL DEL INVERSIONISTA (Buscándolo por su email en el JSON)
             InvestorService investorService = new InvestorService();
             Investor inversionista = investorService.findByEmail(usuarioLogueado.getEmail());
 
             if (inversionista != null && inversionista.getName() != null) {
                 txtUsername.setText(inversionista.getName());
             } else {
-                txtUsername.setText(usuarioLogueado.getEmail()); // Fallback por si no tiene entidad física aún
+                txtUsername.setText(usuarioLogueado.getEmail());
             }
 
-            // 2. Cargar la foto de perfil actual con máscara circular
             cargarFotoPerfil(usuarioLogueado.getProfileImagePath());
 
-            // 3. CARGAR EL PERFIL DE RIESGO ACTUAL EN LOS RADIO BUTTONS
             if (inversionista != null && inversionista.getRiskProfile() != null) {
                 switch (inversionista.getRiskProfile()) {
                     case CONSERVATIVE -> radioConservador.setSelected(true);
@@ -106,6 +104,54 @@ public class CustomizeController {
     }
 
     @FXML
+    private void handleDepositarSaldo() {
+        String montoTexto = txtMontoDeposito.getText();
+
+        if (montoTexto == null || montoTexto.trim().isEmpty()) {
+            mostrarAlertaI18n("customize.alert.empty.fields", "customize.alert.deposit.empty", Alert.AlertType.WARNING);
+            return;
+        }
+
+        try {
+            double montoADepositar = Double.parseDouble(montoTexto.trim());
+
+            if (montoADepositar <= 0) {
+                mostrarAlertaI18n("customize.alert.invalid.amount", "customize.alert.deposit.positive", Alert.AlertType.ERROR);
+                return;
+            }
+
+            User usuarioLogueado = App.getUsuarioLogueado();
+            if (usuarioLogueado != null) {
+                InvestorService investorService = new InvestorService();
+                Investor inversionista = investorService.findByEmail(usuarioLogueado.getEmail());
+
+                if (inversionista != null) {
+                    double saldoAnterior = inversionista.getAvailableCapital();
+                    double nuevoSaldo = saldoAnterior + montoADepositar;
+                    inversionista.setAvailableCapital(nuevoSaldo);
+
+                    investorService.updateInvestor(inversionista);
+
+                    txtMontoDeposito.clear();
+
+                    String patronMensaje = getTraducido("customize.alert.deposit.ok");
+                    String mensajeFormateado = String.format(patronMensaje, montoADepositar);
+                    
+                    mostrarAlertaLiteral(getTraducido("customize.alert.success"), mensajeFormateado, Alert.AlertType.INFORMATION);
+
+                    if (DashboardController.getInstancia() != null) {
+                        DashboardController.getInstancia().initialize(null, null);
+                    }
+                } else {
+                    mostrarAlertaI18n("customize.alert.no.profile", "customize.alert.no.json", Alert.AlertType.ERROR);
+                }
+            }
+        } catch (NumberFormatException e) {
+            mostrarAlertaI18n("customize.alert.format.error", "customize.alert.format.nan", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
     private void handleCargarFoto() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar Foto de Perfil");
@@ -118,7 +164,6 @@ public class CustomizeController {
         if (file != null) {
             rutaImagenTemporal = file.getAbsolutePath();
             cargarFotoPerfil(rutaImagenTemporal);
-            System.out.println("📸 Imagen seleccionada temporalmente: " + rutaImagenTemporal);
         }
     }
 
@@ -128,11 +173,11 @@ public class CustomizeController {
             txtUsername.setEditable(true);
             txtUsername.requestFocus();
             txtUsername.selectAll();
-            btnEditarUsername.setText("Bloquear");
+            btnEditarUsername.setText(getTraducido("customize.btn.lock"));
             editandoUsername = true;
         } else {
             txtUsername.setEditable(false);
-            btnEditarUsername.setText("Editar");
+            btnEditarUsername.setText(getTraducido("customize.btn.edit"));
             editandoUsername = false;
         }
     }
@@ -140,24 +185,17 @@ public class CustomizeController {
     @FXML
     private void handleGuardarFoto() {
         if (rutaImagenTemporal == null) {
-            mostrarAlerta("Información", "No has seleccionado ninguna imagen nueva para guardar.");
+            mostrarAlertaI18n("customize.alert.info", "customize.alert.noimage", Alert.AlertType.INFORMATION);
             return;
         }
 
         User usuarioLogueado = App.getUsuarioLogueado();
         if (usuarioLogueado != null) {
-            // 🎯 PASO CRÍTICO: Guardar la ruta temporal dentro del objeto del usuario en
-            // sesión
             usuarioLogueado.setProfileImagePath(rutaImagenTemporal);
-
-            // Opcional: Aquí llamas al servicio que guarde la sesión del User en su archivo
-            // json
             userService.updateUserInPersistence(usuarioLogueado);
 
-            System.out.println("✅ Foto de perfil guardada con éxito: " + rutaImagenTemporal);
-            mostrarAlerta("Éxito", "Foto de perfil actualizada correctamente.");
+            mostrarAlertaI18n("customize.alert.success", "customize.alert.avatar.ok", Alert.AlertType.INFORMATION);
 
-            // 🔄 Forzar refresco visual del panel lateral izquierdo del Dashboard
             if (DashboardController.getInstancia() != null) {
                 DashboardController.getInstancia().initialize(null, null);
             }
@@ -174,18 +212,15 @@ public class CustomizeController {
             Investor inversionista = investorService.findByEmail(usuarioLogueado.getEmail());
 
             if (inversionista != null) {
-                // Actualizar el nombre en el modelo de persistencia financiero
                 inversionista.setName(nuevoNombre);
-                investorService.updateInvestor(inversionista);// Guarda los cambios en tu JSON
+                investorService.updateInvestor(inversionista);
 
-                System.out.println("✅ Nombre del inversionista guardado: " + nuevoNombre);
-                mostrarAlerta("Éxito", "Nombre del inversionista actualizado correctamente.");
+                mostrarAlertaI18n("customize.alert.success", "customize.alert.username.ok", Alert.AlertType.INFORMATION);
 
                 txtUsername.setEditable(false);
-                btnEditarUsername.setText("Editar");
+                btnEditarUsername.setText(getTraducido("customize.btn.edit"));
                 editandoUsername = false;
 
-                // 🔄 Forzar refresco visual de la barra lateral (Cambiará el label del nombre)
                 if (DashboardController.getInstancia() != null) {
                     DashboardController.getInstancia().initialize(null, null);
                 }
@@ -203,30 +238,21 @@ public class CustomizeController {
             Investor inversionista = investorService.findByEmail(usuarioLogueado.getEmail());
 
             if (inversionista != null) {
-                // 1. Obtener el texto del RadioButton seleccionado en mayúsculas (ej:
-                // "MODERADO")
-                String riesgoTexto = seleccionado.getText().toUpperCase();
-
-                // 2. Mapeo seguro: Traducimos de Español (UI) a Inglés (Enum)
+                // Evaluamos los IDs de los radio buttons o textos traducidos
                 RiskProfile perfilReal;
-                if (riesgoTexto.contains("MODERA")) {
+                if (seleccionado == radioModerado) {
                     perfilReal = RiskProfile.MODERATE;
-                } else if (riesgoTexto.contains("AGRES")) {
+                } else if (seleccionado == radioAgresivo) {
                     perfilReal = RiskProfile.AGGRESSIVE;
                 } else {
                     perfilReal = RiskProfile.CONSERVATIVE;
                 }
 
-                // 3. Asignar el perfil correcto ya traducido
                 inversionista.setRiskProfile(perfilReal);
-
-                // Persistencia de datos en la capa de servicios
                 investorService.updateInvestor(inversionista);
 
-                System.out.println("✅ Perfil de riesgo guardado en JSON: " + perfilReal.name());
-                mostrarAlerta("Éxito", "Perfil de riesgo actualizado correctamente.");
+                mostrarAlertaI18n("customize.alert.success", "customize.alert.risk.ok", Alert.AlertType.INFORMATION);
 
-                // 🔄 Forzar refresco visual del Dashboard para cambiar el label inferior
                 if (DashboardController.getInstancia() != null) {
                     DashboardController.getInstancia().initialize(null, null);
                 }
@@ -234,8 +260,20 @@ public class CustomizeController {
         }
     }
 
-    private void mostrarAlerta(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    // --- MÉTODOS AUXILIARES DE TRADUCCIÓN ---
+    private String getTraducido(String llave) {
+        if (bundle != null && bundle.containsKey(llave)) {
+            return bundle.getString(llave);
+        }
+        return llave; // Fallback para depuración
+    }
+
+    private void mostrarAlertaI18n(String llaveTitulo, String llaveMensaje, Alert.AlertType tipo) {
+        mostrarAlertaLiteral(getTraducido(llaveTitulo), getTraducido(llaveMensaje), tipo);
+    }
+
+    private void mostrarAlertaLiteral(String titulo, String mensaje, Alert.AlertType tipo) {
+        Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);

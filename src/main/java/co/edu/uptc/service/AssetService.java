@@ -12,6 +12,7 @@ import co.edu.uptc.model.enums.AssetType;
 import co.edu.uptc.persistence.JsonRepository;
 
 public class AssetService {
+    private java.util.Timer fluctuationTimer;
 
     private final JsonRepository<Asset> repo;
 
@@ -211,5 +212,47 @@ public class AssetService {
         // Guardar los precios fluctuados en el JSON
         repo.replaceAll(assets);
     }
+    /**
+     * Inicia un temporizador en segundo plano que actualiza los precios
+     * automáticamente cada cierto tiempo.
+     * * @param intervalSeconds Cada cuántos segundos cambiarán los precios.
+     */
+    public void startAutoFluctuation(int intervalSeconds) {
+        // Si ya hay un timer corriendo, lo detenemos primero
+        if (fluctuationTimer != null) {
+            fluctuationTimer.cancel();
+        }
+        
+        // El parámetro 'true' indica que es un hilo "Daemon" (se cerrará si cierras la app)
+        fluctuationTimer = new java.util.Timer(true); 
+        
+        fluctuationTimer.scheduleAtFixedRate(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                // Ejecutamos tu método existente
+                simulateMarketFluctuation();
+                System.out.println("Fluctuación de mercado ejecutada. Archivo JSON actualizado.");
+            }
+        }, 0, intervalSeconds * 1000L); // Convertimos segundos a milisegundos
+    }
+
+    /**
+     * Detiene la fluctuación automática.
+     */
+    public void stopAutoFluctuation() {
+        if (fluctuationTimer != null) {
+            fluctuationTimer.cancel();
+            fluctuationTimer = null;
+        }
+    }
+    private static AssetService instance;
+
+// 2. Añade este método estático para obtener la instancia única
+public static synchronized AssetService getInstance() {
+    if (instance == null) {
+        instance = new AssetService();
+    }
+    return instance;
+}
 
 }

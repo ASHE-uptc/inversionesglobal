@@ -20,6 +20,13 @@ import co.edu.uptc.persistence.JsonRepository; // Apunta a tu paquete de persist
  * disponible según los requisitos de administración de inversionistas.
  */
 public class InvestorService {
+    private static InvestorService instance;
+    public static synchronized InvestorService getInstance() {
+    if (instance == null) {
+        instance = new InvestorService();
+    }
+    return instance;
+}
     private final JsonRepository<Investor> repo;
 
     /**

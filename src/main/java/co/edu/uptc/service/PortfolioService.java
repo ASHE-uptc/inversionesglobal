@@ -15,6 +15,13 @@ public class PortfolioService {
     private final InvestorService investorService;
     private final InvestmentService inversionService;
     private final AssetService assetService;
+    private static PortfolioService instance;
+    public static synchronized PortfolioService getInstance() {
+    if (instance == null) {
+        instance = new PortfolioService(InvestmentService.getInstance(), AssetService.getInstance(), InvestorService.getInstance());
+    }
+    return instance;
+    }
 
     /**
      * Construye el servicio de portafolio inyectando las dependencias core del sistema.

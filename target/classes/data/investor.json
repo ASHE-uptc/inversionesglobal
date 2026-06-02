@@ -24,5 +24,32 @@
     "availableCapital": 0.0,
     "riskProfile": "MODERATE",
     "investments": []
+  },
+  {
+    "id": "4b228509-e19f-40da-bcef-0284601d1928",
+    "name": "Carlos",
+    "email": "carlos@gmail.com",
+    "availableCapital": 27.009404226734873,
+    "riskProfile": "AGGRESSIVE",
+    "investments": [
+      {
+        "id": "55f3c211-1336-4b8f-b045-86d1f139d242",
+        "inversionistId": "4b228509-e19f-40da-bcef-0284601d1928",
+        "assetId": "3f9e56f5-6161-4514-a344-776ef82df368",
+        "amount": 0.005003752814610959,
+        "purchasePrice": 1.0,
+        "date": "2026-06-01",
+        "time": "21:54:47.744628100"
+      },
+      {
+        "id": "9b67809e-8342-40a9-ac40-e7580f231f87",
+        "inversionistId": "4b228509-e19f-40da-bcef-0284601d1928",
+        "assetId": "3f9e56f5-6161-4514-a344-776ef82df368",
+        "amount": 0.010334315093267194,
+        "purchasePrice": 1.9905957732651272,
+        "date": "2026-06-01",
+        "time": "23:21:18.696639500"
+      }
+    ]
   }
 ]

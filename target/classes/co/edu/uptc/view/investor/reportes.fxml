@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:controller="co.edu.uptc.viewcontroller.investor.ReportesController" styleClass="report-card" stylesheets="@../../css/reportes.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">    
+    <HBox styleClass="report-row">
+        <Label text="%reportes.number" styleClass="report-label" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblNumeroReporte" text="01" styleClass="report-value" />
+    </HBox>
+    
+    <Region styleClass="report-separator" />
+    
+    <HBox styleClass="report-row">
+        <Label text="%reportes.initial_capital" styleClass="report-label" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblCapitalInicial" text="\$ 0.00" styleClass="report-value" />
+    </HBox>
+    
+    <Region styleClass="report-separator" />
+    
+    <HBox styleClass="report-row">
+        <Label text="%reportes.current_value" styleClass="report-label" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblValorActual" text="\$ 0.00" styleClass="report-value" />
+    </HBox>
+    
+    <Region styleClass="report-separator" />
+    
+    <HBox styleClass="report-row">
+        <Label text="%reportes.net_yield" styleClass="report-label" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblRendimiento" text="+ 0.00%" styleClass="report-value-positive" />
+    </HBox>
+    
+    <Region styleClass="report-separator" />
+    
+    <HBox styleClass="report-row">
+        <Label text="%reportes.avg_risk" styleClass="report-label" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblRiesgo" text="-" styleClass="report-value" />
+    </HBox>
+
+</VBox>

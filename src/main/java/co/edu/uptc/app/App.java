@@ -24,6 +24,8 @@ public class App extends Application {
         stage.setTitle("GLOBAL");
         stage.setScene(scene);
         stage.show();
+        co.edu.uptc.service.AssetService.getInstance().startAutoFluctuation(5);
+        stage.show();
     }
 
     public static void setRoot(String fxml) throws IOException {

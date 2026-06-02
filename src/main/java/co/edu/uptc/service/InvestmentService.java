@@ -25,6 +25,13 @@ public class InvestmentService {
     private final JsonRepository<Investment> repo;
     private final AssetService assetService;
     private final InvestorService investorService; // Inyectado para garantizar atomicidad global
+    private static InvestmentService instance;
+    public static synchronized InvestmentService getInstance() {
+    if (instance == null) {
+        instance = new InvestmentService(AssetService.getInstance(), InvestorService.getInstance());
+    }
+    return instance;
+    }
 
     /**
      * Constructor principal unificado. Recibe los servicios core compartidos por la UI.

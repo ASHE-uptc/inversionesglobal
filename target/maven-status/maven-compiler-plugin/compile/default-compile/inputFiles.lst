@@ -1,36 +1,37 @@
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\DashboardController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\exception\InvestorNotFoundException.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\RestorePasswordFinalController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\exception\AssetNotFoundException.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\RegisterController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\User.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\service\UserService.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\LoginController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\Investment.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\admin\GestionarInversionistasController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\service\InvestmentService.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\RestorePasswordController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\ActivosController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\service\PortfolioService.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\admin\AdminDashboardController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\exception\OperationCancelledException.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\ProfileImageController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\service\InvestorService.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\security\PasswordEncoder.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\exception\InsufficientCapitalException.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\exception\IncompatibleRiskProfileException.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\util\I18nManager.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\app\App.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\CustomizeController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\enums\RiskProfile.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\persistence\JsonRepository.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\DetalleInversionController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\enums\AssetType.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\service\AssetService.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\util\AppConfig.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\repository\Repository.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\RestorePasswordSecurityQuestionController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\Asset.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\MisInversionesController.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\Investor.java
-C:\Users\haxel\Desktop\Inversiones Global\inversionesglobal\src\main\java\co\edu\uptc\model\enums\UserRole.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\RestorePasswordController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\model\enums\RiskProfile.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\repository\Repository.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\RegisterController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\DashboardController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\admin\AdminDashboardController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\service\PortfolioService.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\exception\IncompatibleRiskProfileException.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\model\Investment.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\MisInversionesController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\service\UserService.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\RestorePasswordFinalController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\LoginController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\model\enums\AssetType.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\util\AppConfig.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\admin\GestionarInversionistasController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\app\App.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\CustomizeController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\model\Investor.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\service\InvestorService.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\service\InvestmentService.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\RestorePasswordSecurityQuestionController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\util\I18nManager.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\auth\ProfileImageController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\ActivosController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\service\AssetService.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\exception\InvestorNotFoundException.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\persistence\JsonRepository.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\model\User.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\model\enums\UserRole.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\exception\AssetNotFoundException.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\exception\InsufficientCapitalException.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\exception\OperationCancelledException.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\model\Asset.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\security\PasswordEncoder.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\DetalleInversionController.java
+C:\Proyecto Segundo Corte progra\inversionesglobal\src\main\java\co\edu\uptc\viewcontroller\investor\ReportesController.java

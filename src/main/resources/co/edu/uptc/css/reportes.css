@@ -1,0 +1,52 @@
+/* Contenedor principal (Tarjeta oscura) */
+.report-card {
+    -fx-background-color: #12151e; /* Azul muy oscuro/casi negro */
+    -fx-background-radius: 8px;
+    -fx-padding: 25px 30px;
+    -fx-min-width: 400px; /* Ajusta este ancho según necesites */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);
+}
+
+/* Filas */
+.report-row {
+    -fx-alignment: center-left;
+    -fx-padding: 12px 0px;
+}
+
+/* Textos de la izquierda (Etiquetas) */
+.report-label {
+    -fx-text-fill: #e2e8f0; /* Blanco apagado / Gris claro */
+    -fx-font-size: 15px;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Textos de la derecha (Valores) */
+.report-value {
+    -fx-text-fill: #ffffff; /* Blanco puro */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Valor específico para rendimiento positivo (Verde brillante) */
+.report-value-positive {
+    -fx-text-fill: #00e676; /* Verde financiero */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Valor específico para rendimiento negativo (Rojo) por si acaso */
+.report-value-negative {
+    -fx-text-fill: #ff5252;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Líneas separadoras finas */
+.report-separator {
+    -fx-border-color: #ffffff22; /* Blanco al 22% de opacidad (casi transparente) */
+    -fx-border-width: 1px 0px 0px 0px;
+    -fx-pref-height: 1px;
+}
